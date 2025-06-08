@@ -1,10 +1,11 @@
+import { NextRequest } from "next/server";
 import cloudinary from "../../../../../utils/cloudinary";
 import { connectDB } from "../../db/connectDB";
 import Product from "../../models/product.model";
 
-export async function GET({ params }: { params: Promise<{ productId: string }> }) {
+export async function GET(req: NextRequest) {
     await connectDB();
-    const productId = (await params).productId;
+    const productId = req.nextUrl.pathname.split('/').pop();
     const product = await Product.findById(productId);
     if (!product) {
         return Response.json({ message: "Product not found" }, { status: 400 });
@@ -12,9 +13,9 @@ export async function GET({ params }: { params: Promise<{ productId: string }> }
     return Response.json({ product }, { status: 200 });
 }
 
-export async function DELETE({ params }: { params: Promise<{ productId: string }> }) {
+export async function DELETE(req: NextRequest) {
     await connectDB();
-    const productId = (await params).productId;
+    const productId = req.nextUrl.pathname.split('/').pop();
     const product = await Product.findById(productId);
     if (!product) {
         return Response.json({ message: "Product not found." }, { status: 400 })
