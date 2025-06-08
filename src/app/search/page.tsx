@@ -5,9 +5,9 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
-const SearchPage = () => {
+const SearchComponent = () => {
     const searchParams = useSearchParams();
     const [products, setProducts] = useState([]);
     useEffect(() => {
@@ -33,6 +33,12 @@ const SearchPage = () => {
             </div>
         </div>
     )
+}
+
+const SearchPage = () => {
+    return <Suspense fallback={"Hello"}>
+        <SearchComponent/>
+    </Suspense>
 }
 
 export default SearchPage
