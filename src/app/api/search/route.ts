@@ -11,7 +11,7 @@ export async function GET(request: NextRequest){
             name: {$regex: searchTerm, $options: "i"}
         }).sort({createdAt: -1});
         return Response.json({products}, {status: 200});
-    }catch(error: any){
-        return Response.json({message: error.message}, {status: 400});
+    }catch(error){
+        return Response.json({message: "error"}, {status: 400});
     }
 }

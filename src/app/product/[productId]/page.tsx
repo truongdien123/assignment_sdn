@@ -33,7 +33,7 @@ const ProductPage = () => {
     axios
       .get(`/api/product/${params.productId}`)
       .then((response) => setProduct(response.data.product));
-  }, []);
+  }, [params.productId]);
 
   if (!product) {
     return <p>Loading...</p>;

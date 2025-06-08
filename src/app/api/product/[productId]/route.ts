@@ -16,7 +16,7 @@ export async function GET(request: Request, {params}: {params: Promise<{productI
     }
 }
 
-export async function DELETE(request: Request, {params}: {params: Promise<{productId: string}>}){
+export async function DELETE( {params}: {params: Promise<{productId: string}>}){
     await connectDB();
     const productId = (await params).productId;
     try{
@@ -33,7 +33,7 @@ export async function DELETE(request: Request, {params}: {params: Promise<{produ
                 .then((result) => console.log("Result", result));
         await Product.findByIdAndDelete(productId);
         return Response.json({message: "Product deleted successfully"}, {status: 200});
-    } catch(error: any){
-        return Response.json({message: error.message}, {status: 400});
+    } catch(error){
+        return Response.json({message: "error"}, {status: 400});
     }
 }

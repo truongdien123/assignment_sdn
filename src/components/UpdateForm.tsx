@@ -24,7 +24,7 @@ const UpdateForm = ({ productId }: { productId: string }) => {
     axios
       .get(`/api/product/${productId}`)
       .then((response) => setProduct(response.data.product));
-  }, []);
+  }, [productId]);
 
   useEffect(() => {
     if (product) {
