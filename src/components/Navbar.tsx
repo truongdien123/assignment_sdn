@@ -1,34 +1,48 @@
-"use client";
-
-import { Search } from "lucide-react";
+// src/components/Navbar.tsx
 import Link from "next/link";
-import React, { ChangeEvent } from "react";
-import { useRouter } from "next/navigation";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import LogoutButton from "./Logout";
 
-const Navbar = () => {
-    const router = useRouter();
-    const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set("searchTerm", e.target.value);
-        const searchQuery = urlParams.toString();
-        router.push(`/search?${searchQuery}`);
-    }
-    return (
-        <nav className="px-4 md:px-12 py-4 md:py-6 bg-white text-black">
-            <div className="flex justify-between items-center">
-                <Link href={"/"} className="hidden md:inline-block text-lg font-semibold">Zwatches</Link>
-                <div className="relative max-w-[300px] md:w-[400px]">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <Search className="w-4 h-4"/>
-                    </div>
-                    <input type="text" onChange={handleChange} className="h-[36px] relative pl-10 border-[1px] border-black/[0.7] text-sm rounded-[8px] w-full py-2 px-3 focus:outline-none bg-transparent" placeholder="Search"/>
-                </div>
-                <Link href={"/add-product"}>
-                    <button className="bg-[#212529] text-white px-3 py-2 rounded-md cursor-pointer">Add Product</button>
-                </Link>
-            </div>
-        </nav>
-    )
+export default async function Navbar() {
+  const supabase = createServerComponentClient({ cookies });
+  const { data } = await supabase.auth.getUser();
+  const user = data?.user;
+
+  return (
+    <nav className="mb-8 flex justify-between items-center px-4 py-3 bg-white shadow-md rounded-lg">
+      <div className="text-lg font-bold text-blue-600">
+        <Link href="/">Watches</Link>
+      </div>
+
+      <div className="space-x-4">
+        {user ? (
+          <>
+            <Link
+              href="/add-product"
+              className="text-gray-700 hover:text-blue-600 font-medium transition text-lg bg-green-500 px-4 py-2 rounded"
+            >
+              Create Product
+            </Link>
+            <LogoutButton />
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition p-10"
+            >
+              Đăng nhập
+            </Link>
+            <Link
+              href="/register"
+              className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded transition"
+            >
+              Đăng ký
+            </Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
 }
-
-export default Navbar

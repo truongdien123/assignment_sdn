@@ -1,6 +1,7 @@
 "use client";
 
 import ProductList from "@/components/ProductList";
+import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,6 +20,7 @@ interface Product {
 const ProductPage = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const params = useParams();
   const [product, setProduct] = useState<Product>();
 
@@ -28,6 +30,17 @@ const ProductPage = () => {
     toast.success(response.data.message);
     router.push("/");
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
 
   useEffect(() => {
     axios
@@ -57,29 +70,31 @@ const ProductPage = () => {
         <div className="basis-1/2 py-8">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl">{product.name}</h2>
+            
+            {user && (
+              <div className="text-2xl font-bold -mt-2 relative">
+                <span
+                  onClick={() => setOpen(!open)}
+                  className="cursor-pointer tracking-widest"
+                >
+                  ...
+                </span>
 
-            <div className="text-2xl font-bold -mt-2 relative">
-              <span
-                onClick={() => setOpen(!open)}
-                className="cursor-pointer tracking-widest"
-              >
-                ...
-              </span>
-
-              {open && (
-                <div className="absolute bg-white shadow-md pb-2 px-5 text-base font-normal right-0 top-10">
-                  <Link href={`/product/${product._id}/update`}>
-                    <p className="mb-2 pb-2 border-b border-gray-300">Update</p>
-                  </Link>
-                  <p
-                    className="text-red-500 cursor-pointer"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </p>
-                </div>
-              )}
-            </div>
+                {open && (
+                  <div className="absolute bg-white shadow-md pb-2 px-5 text-base font-normal right-0 top-10">
+                    <Link href={`/product/${product._id}/update`}>
+                      <p className="mb-2 pb-2 border-b border-gray-300">Update</p>
+                    </Link>
+                    <p
+                      className="text-red-500 cursor-pointer"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <h3 className="text-3xl font-semibold mt-3">${product.price}</h3>

@@ -10,18 +10,27 @@
   },
   "dependencies": {
     "axios": "^1.9.0",
+    "bcryptjs": "^3.0.2",
     "cloudinary": "^2.6.1",
+    "cookies-next": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.513.0",
     "mongodb": "^6.17.0",
     "mongoose": "^8.15.1",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.5.2"
+    "react-hot-toast": "^2.5.2",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/auth-helpers-react": "^0.5.0",
+    "@supabase/auth-helpers-shared": "^0.7.0",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.50.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
