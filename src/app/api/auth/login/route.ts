@@ -3,7 +3,6 @@ import { connectDB } from "../../db/connectDB";
 import User from "../../models/user.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { setCookie } from "cookies-next";
 
 export async function POST(req: Request) {
   try {

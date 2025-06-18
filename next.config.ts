@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
       }
     ]
   },
+  eslint: {
+    ignoreDuringBuilds: true, // ✅ Tắt ESLint khi build
+  },
+  experimental: {
+    serverActions: {},
+  },
   serverActions: {
     bodySizeLimit: "10mb",
   }

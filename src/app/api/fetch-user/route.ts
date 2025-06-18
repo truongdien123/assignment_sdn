@@ -3,7 +3,7 @@ import { connectDB } from "../db/connectDB";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import User from "../models/user.model";
 
-export async function GET(request: Request) {
+export async function GET() {
     await connectDB();
     const cookieStore = await cookies();
     const token = cookieStore.get("token");
