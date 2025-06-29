@@ -1,6 +1,7 @@
 "use client";
 
 import ProductList from "@/components/ProductList";
+import { useCart } from "@/context/CartContext";
 import { supabase } from "@/lib/supabaseClient";
 import axios from "axios";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
 
 interface Product {
   image: string;
@@ -22,6 +24,7 @@ const ProductPage = () => {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const params = useParams();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState<Product>();
 
   const handleDelete = async () => {
@@ -70,7 +73,7 @@ const ProductPage = () => {
         <div className="basis-1/2 py-8">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl">{product.name}</h2>
-            
+
             {user && (
               <div className="text-2xl font-bold -mt-2 relative">
                 <span
@@ -83,7 +86,9 @@ const ProductPage = () => {
                 {open && (
                   <div className="absolute bg-white shadow-md pb-2 px-5 text-base font-normal right-0 top-10">
                     <Link href={`/product/${product._id}/update`}>
-                      <p className="mb-2 pb-2 border-b border-gray-300">Update</p>
+                      <p className="mb-2 pb-2 border-b border-gray-300">
+                        Update
+                      </p>
                     </Link>
                     <p
                       className="text-red-500 cursor-pointer"
@@ -101,6 +106,19 @@ const ProductPage = () => {
 
           <p className="font-semibold mt-10 text-lg">Description</p>
           <p className="mt-1">{product.description}</p>
+          <button
+            onClick={() =>
+                         addToCart({
+                          productId: product._id,
+                          name: product.name,
+                          price: product.price,
+                          quantity: 1,
+                          imageUrl: product.image || '/placeholder.png',
+                      })}
+            className="bg-blue-600 hover:bg-red-700 text-white px-4 py-2 rounded transition"
+          >
+            Add to cart
+          </button>
         </div>
       </div>
 
